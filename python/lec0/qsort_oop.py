@@ -1,5 +1,26 @@
+# This implements OOP style implementation of a quicksort algorithm
 
-def quicksort(nums, fst, lst):
+import random
+
+def quicksort(nums):
+   if len(nums) <= 1:
+       return nums
+   else:
+       q = random.choice(nums)
+       s_nums = []
+       m_nums = []
+       e_nums = []
+       for n in nums:
+           if n < q:
+               s_nums.append(n)
+           elif n > q:
+               m_nums.append(n)
+           else:
+               e_nums.append(n)
+       return quicksort(s_nums) + e_nums + quicksort(m_nums)
+
+# Improved memory usage
+def quicksort_improved(nums, fst, lst):
    if fst >= lst: return
 
    i, j = fst, lst
@@ -16,4 +37,10 @@ def quicksort(nums, fst, lst):
 
 
 if __name__ == "__main__":
-    print ("Hello")
+
+    nums = [1,3,-2,11,0,4]
+
+    res = quicksort (nums)
+
+    for i in res:
+        print (i)
