@@ -54,25 +54,22 @@ object App1 extends App {
   }
   
   trait Cat extends Animal with Grass with Meat {
-    def speak() = println ("Meow")
+    override def speak() = println ("Meow")
   }
   
   trait Dog extends Animal with Meat with Grass {
-    def speak() = println ("Woof")
+    override def speak() = println ("Woof")
   }
   
-  //class Mutant (name:String) extends Animal with Cat with Dog {
-  class Mutant (name:String) extends Cat with Dog {
-    //def speak = ???
-  }
-  
-  //trait Mutant  extends Animal with Cat with Dog {
-  //  //def speak = ???
-  //}
-  trait Base { override def toString = "Base" }
-  class A extends Base { override def toString = "A->" + super.toString }
-  trait B extends Base { override def toString = "B->" + super.toString }
-  trait C extends Base { override def toString = "C->" + super.toString }
-  class D extends A with B with C { override def toString = "D->" + super.toString } 
+  // Watch the order of mix-ins
+  class Mutant0 (name:String) extends Animal with Cat with Dog 
+  val m0  = new Mutant0 ("Peggy")
+  m0.speak()
+
+
+  class Mutant1 (name:String) extends Animal with Dog with Cat
+  val m1  = new Mutant1 ("Wolfy")
+  m1.speak()
+
   
 }
