@@ -40,11 +40,26 @@ object Func extends App {
   val res2  = lambda ( (x:Int) => { factor*x } )
   println (s"res2 = $res2")
 
+  // Curried function
+  def normal (a:Int, b:Int, c:Int) = a + b +c 
+  def curr0 (a:Int)(b:Int)(c:Int) = a + b +c
+  def curr1 = (normal _).curried 
+
+  val res3  = normal (4,5,6)
+  val res4  = curr0 (4)(5)(6)
+  val res5  = curr1 (4)(5)(6)
+  
+  println (s"res3 = $res3")
+  println (s"res4 = $res4")
+  println (s"res5 = $res5")
+
   // Partially defined function 
 
+  //val pf0: PartialFunction[Int]
   
 
-  // Partially applied function
+  // Partially applied function 
+  // Implicit function
   // Higher Order function
 
 }
