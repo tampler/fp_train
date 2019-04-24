@@ -2,15 +2,17 @@ package lec1
 
 import scala.collection.mutable.ArrayBuffer
 
+
+//--------------------------------------------------------------------------------------------
+// Immutable/mutable array for mutable data
+//--------------------------------------------------------------------------------------------
 object App0 extends App {
+
 
   def printme (arr: ArrayBuffer[Int]):Unit = {
     arr foreach { println }
   }
 
-  //--------------------------------------------------------------------------------------------
-  // Immutable/mutable array for mutable data
-  //--------------------------------------------------------------------------------------------
 
   // Immutable array buffer
   val arr0, arr1 = ArrayBuffer[Int] (1,2)
@@ -37,21 +39,27 @@ object App0 extends App {
   
 }
 
+//--------------------------------------------------------------------------------------------
+// Traits and Basic Inheritance
+//--------------------------------------------------------------------------------------------
 object App1 extends App {
 
   // See Odersky p.272
 
-  //--------------------------------------------------------------------------------------------
-  // Trait
-  //--------------------------------------------------------------------------------------------
-  
+ 
+  // Food hierarchy
   trait Food 
   trait Meat  extends Food 
   trait Grass extends Food
 
+  // Animals hierarchy
   abstract class Animal {
-    def speak:Unit    
+    def speak:Unit    // abstract method, defined not implemented
+                      // can't instantiate abstract classes
   }
+
+  // val animal  = new Animal() // won't compile
+  
   
   trait Cat extends Animal with Grass with Meat {
     override def speak() = println ("Meow")
@@ -72,4 +80,43 @@ object App1 extends App {
   m1.speak()
 
   
+}
+
+//--------------------------------------------------------------------------------------------
+// File IO and parsing
+//--------------------------------------------------------------------------------------------
+
+object App2 extends App {
+
+  import java.io.File
+  import scala.io.Source
+  
+  // Person to parse
+  case class Person (first:String, last:String, born:Int)
+
+  //--------------------------------------------------------------------------------------------
+  // Simple, Imperative, OOP-type with low safety and possible exceptions
+  //--------------------------------------------------------------------------------------------
+  
+  val arr = ArrayBuffer[Person] ()
+  
+  // Read text file, imperative OOP style
+  val fname  = "dump.txt"
+
+  // danger! Read file may cause an exception
+  for (line <- Source.fromResource(fname).getLines){
+    println (line)
+
+    val cols  = line.split(" ").map(_.trim)
+    
+    // danger! toInt may cause an exception
+    arr += Person(cols(0), cols(1), cols(2).toInt)
+  
+  }
+
+  println ("Parsed data:")
+  arr foreach { println }
+  
+  
+
 }
