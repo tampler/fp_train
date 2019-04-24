@@ -37,7 +37,7 @@ object Func extends App {
 
   val factor = 3
 
-  val res2  = lambda ( (x:Int) => { factor*x } )
+  val res2  = lambda ( (x:Int) => { factor*x } ) // binds ext variable
   println (s"res2 = $res2")
 
   // Curried function
@@ -52,15 +52,72 @@ object Func extends App {
   println (s"res3 = $res3")
   println (s"res4 = $res4")
   println (s"res5 = $res5")
+  
+  // Partially applied function 
+
+  def BigFunction (a:Int, b:Int) = { a + b }
+  def SmallFunction (a:Int) = BigFunction ( a, -2) // partial application
+
+  val res6  = SmallFunction (4)
+  println (s"res6 = $res6")
+  
 
   // Partially defined function 
 
-  //val pf0: PartialFunction[Int]
+  val div0 = new PartialFunction[Int, Int] {
+    def apply(x: Int) = 45 / x
+    def isDefinedAt(x: Int) = x != 0
+  }
+  
+  val div1 = new PartialFunction[Int, Int] {
+    def apply(x: Int) = 0
+    def isDefinedAt(x: Int) = true
+  }
+
+  // Define a full function 
+  val div  = div0 orElse div1
   
 
-  // Partially applied function 
-  // Implicit function
-  // Higher Order function
+  val res7  = div (0)
+  val res8  = div (-3)
+  println (s"res7 = $res7")
+  println (s"res8 = $res8")
+      
 
+  // Implicit function   
+
+  def functionTakingString(str: String) = str 
+
+  // implicit conversion
+  implicit def intToStr(num: Int): String = s"The value is $num"
+  
+
+  val res9  = functionTakingString (11)
+  println (s"res9 = $res9")
+  
+
+  // Higher Order function 
+
+
+  // A function, which takes a vector and another "reduce" function
+  def reduce (arr:Vector[Int], f:(Int,Int) => Int ):Int  = {
+
+    val tmp = arr.foldLeft(1) { f }
+    tmp
+    
+  }
+
+  // Reducers
+  def add (a:Int, b:Int) = a + b
+  def mul (a:Int, b:Int) = a * b
+
+  val data  = Vector (-1,2,4)
+  
+  val res10  = reduce (data, add)
+  println (s"res10 = $res10")
+  
+  val res11  = reduce (data, mul)
+  println (s"res11 = $res11")
+  
 }
 
