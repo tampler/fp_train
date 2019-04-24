@@ -91,7 +91,7 @@ object App2 extends App {
   import java.io.File
   import scala.io.Source
   
-  // Person to parse
+  // Person container to store parsed data
   case class Person (first:String, last:String, born:Int)
 
   //--------------------------------------------------------------------------------------------
@@ -105,18 +105,44 @@ object App2 extends App {
 
   // danger! Read file may cause an exception
   for (line <- Source.fromResource(fname).getLines){
-    println (line)
 
-    val cols  = line.split(" ").map(_.trim)
-    
-    // danger! toInt may cause an exception
-    arr += Person(cols(0), cols(1), cols(2).toInt)
+    //println (line)
+
+    val record  = line.split(" ").map(_.trim)
+    //record.shit()
+
+    // danger! toInt may cause an exception 
+    val item = record match {
+      case Array(first, last, year) => Person (first, last, year.toInt)
+    }
+
+    arr += item
   
   }
 
   println ("Parsed data:")
   arr foreach { println }
   
+  //--------------------------------------------------------------------------------------------
+  // File IO, Generic, Pure, Safe, Functional
+  //-------------------------------------------------------------------------------------------- 
+
+  import java.io.File
+  import FileIO._
+  import FileIO.zio_resources._
   
+  import scalaz.zio._
+
+  //val z: IO[IOException, Unit] = openFile("data.json").bracket(closeFile(_)) { file =>
+  //  for {
+  //    data    <- decodeData(file)
+  //    grouped <- groupData(data)
+  //  } yield grouped
+  //}
+
+//  val fin  = new File ("dump.txt")
+//  
+//  //val z: IO[IOException, Unit] = openFile("data.json").bracket(closeFile(_))
+//  val z: IO[Exception, Unit] = InputStream.openFile(fin).bracket(InputStream.closeFile(_))
 
 }
