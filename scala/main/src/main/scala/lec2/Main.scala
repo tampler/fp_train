@@ -76,7 +76,8 @@ object Main extends App {
   //--------------------------------------------------------------------------------------------
   import Common._
   import Fruits._
-  import Fruits.Addable._
+  //import Fruits.Addable._
+  //import Fruits.Addable.ops._
   
 
   def AppleCount (apples:Vector[Apple]):Int   = apples.size
@@ -89,7 +90,6 @@ object Main extends App {
   
   //val oranges =  Vector(3)
    
-  
   val apple0  = new Apple ("yellow")
   val apple1  = new Apple ("white")
   
@@ -104,12 +104,16 @@ object Main extends App {
   println (s"Simple Apple add = $res3")
   println (s"Simple Orange add = $res4")
   
-  // Add using Addable trait 
-  val res5  = add (apple0, apple1)
-  val res6  = add (orange0, orange1)
+  def mysum[A](a:A, b:A)(implicit ev: Addable[A]):A = {
+    ev.add(a,b)
+  }
+
+  val res5  = mysum(apple0, apple1).toString
+  val res6  = mysum(orange0, orange1)
+  //val res60  = mysum(2.0, 3.0)
   
-  println (s"Trait Apple add = $res5")
-  println (s"Trait Orange add = $res6")
+  println (s"Mysum Apple add = $res5")
+  println (s"Mysum Orange add = $res6")
   
     
    
