@@ -74,14 +74,34 @@ object Main extends App {
   //--------------------------------------------------------------------------------------------
   // Ad-hoc Polymorphism
   //--------------------------------------------------------------------------------------------
-  class Apple (color:String) 
-  class Orange (size:Int) 
+  import Common._
   
-  class Box (numOranges:Int, numApples:Int) {
-    def count:Int = ??? // how to add Apples to Oranges ???
-  }
 
-  def AppleCount (apples:Vector[Int]):Int = apples.sum
+  def AppleCount (apples:Vector[Apple]):Int   = apples.size
+  //def OrangeCount (oranges:Vector[Int]):Int = oranges.sum
+
+  val apples  =  Vector(new Apple ("red"))
+  val res2  = AppleCount(apples)
+  
+  println (s"res2 = $res2")
+  
+  //val oranges =  Vector(3)
+   
+  
+  val apple0  = new Apple ("yellow")
+  val apple1  = new Apple ("white")
+  
+  val orange0  = new Orange (3)
+  val orange1  = new Orange (5)
+  //val apple2  = apple0 + apple1
+  
+  val res3  = Fruits.sumApples(apple0, apple1)
+  val res4  = Fruits.sumOranges(orange0, orange1)
+  
+  println (s"Apple Sum = $res3")
+  println (s"Orange Sum = $res4")
+  
+  
     
    
 }
