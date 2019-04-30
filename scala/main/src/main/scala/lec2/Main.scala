@@ -81,5 +81,7 @@ object Main extends App {
     def count:Int = ??? // how to add Apples to Oranges ???
   }
 
-
+  def AppleCount (apples:Vector[Int]):Int = apples.sum
+    
+   
 }
