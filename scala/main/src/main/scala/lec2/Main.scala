@@ -44,7 +44,13 @@ object Main extends App {
   sealed abstract class Shape[A] {
     def Area:A // abstract by default
   }
+  
+  // Take 1 - Simple approach
+  //class RectangleBasic[A] (a:A, b:A) extends Shape[A] {
+  //  def Area():A  = a * b
+  //}
 
+  // Take 2 - Constrain the data type
   class Rectangle[A : Numeric ] (a:A, b:A) extends Shape[A] {
 
     // Define and import all numeric 
@@ -65,7 +71,15 @@ object Main extends App {
   val res1  = floatRectangle.Area()
   println (s"res1 = $res1")
   
+  //--------------------------------------------------------------------------------------------
+  // Ad-hoc Polymorphism
+  //--------------------------------------------------------------------------------------------
+  class Apple (color:String) 
+  class Orange (size:Int) 
   
+  class Box (numOranges:Int, numApples:Int) {
+    def count:Int = ??? // how to add Apples to Oranges ???
+  }
 
 
 }
