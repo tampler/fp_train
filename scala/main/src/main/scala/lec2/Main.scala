@@ -75,6 +75,8 @@ object Main extends App {
   // Ad-hoc Polymorphism
   //--------------------------------------------------------------------------------------------
   import Common._
+  import Fruits._
+  import Fruits.Addable._
   
 
   def AppleCount (apples:Vector[Apple]):Int   = apples.size
@@ -95,12 +97,19 @@ object Main extends App {
   val orange1  = new Orange (5)
   //val apple2  = apple0 + apple1
   
-  val res3  = Fruits.sumApples(apple0, apple1)
-  val res4  = Fruits.sumOranges(orange0, orange1)
+  // Add using simple functions
+  val res3  = Fruits.addApples(apple0, apple1)
+  val res4  = Fruits.addOranges(orange0, orange1)
   
-  println (s"Apple Sum = $res3")
-  println (s"Orange Sum = $res4")
+  println (s"Simple Apple add = $res3")
+  println (s"Simple Orange add = $res4")
   
+  // Add using Addable trait 
+  val res5  = add (apple0, apple1)
+  val res6  = add (orange0, orange1)
+  
+  println (s"Trait Apple add = $res5")
+  println (s"Trait Orange add = $res6")
   
     
    
