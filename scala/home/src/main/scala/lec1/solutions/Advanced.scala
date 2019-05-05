@@ -15,6 +15,98 @@ object AdvancedSolutions extends App {
   // using for iteration 
   // using recursion
   // your own idea
+ 
+  type VecInt = Vector[Int]
+
+  // Lib method
+  def Sum0 (vec:VecInt):Int = vec.sum 
+  
+  // mutable variables
+  def Sum1 (vec:VecInt):Int = {
+    var res = 0
+
+    // iterate over array as in Java and Python and add to the output sum
+    for (item <- vec)
+      res += item
+    
+    res
+  }
+
+  // mutable variables. Iterate with map 
+  def Sum2 (vec:VecInt):Int = {
+    var res = 0 
+    vec map ( v => res = res + v)
+    
+    res
+  }
+  
+  // mutable variables. Iterate with foreach
+  def Sum3 (vec:VecInt):Int = {
+    var res = 0 
+    vec foreach ( v => res = res + v)
+    
+    res
+  }
+  
+  // Loop thru the vector
+  def Sum4 (vec:VecInt):Int = {
+    var res  = 0
+
+    for (i <- 0 until vec.length)
+      res += vec(i)
+    
+    res
+  }
+
+  def Sum5 (vec:VecInt):Int = {
+    val res  = vec reduce (_ + _)
+    res
+  }
+  
+  def Sum6 (vec:VecInt):Int = {
+    val res  = vec.foldLeft (0) (_ + _)
+    res
+  }
+
+  //--------------------------------------------------------------------------------------------
+  
+  case class Sum (a:Int) {
+    def add(b:Int):Sum = copy(a = a + b)
+  }
+
+  def Sum7 (vec:VecInt) = {
+    val init = Sum (0)
+    
+
+    val res = vec map ( v => init.add(v) )
+    
+    res
+  }
+
+  //--------------------------------------------------------------------------------------------
+  // Let's test all this stuff
+  //--------------------------------------------------------------------------------------------
+  
+  val arr  = Vector (1,2,3)
+  
+  for (i <- 0 until 7) {
+    val res = i match {
+      case 0 =>  Sum0(arr)
+      case 1 =>  Sum1(arr)
+      case 2 =>  Sum2(arr)
+      case 3 =>  Sum3(arr)
+      case 4 =>  Sum4(arr)
+      case 5 =>  Sum5(arr)
+      case 6 =>  Sum6(arr)
+      case _ =>  0
+    }
+    println (s"res $i = $res")
+  }
+    
+  
+    
+
+  //--------------------------------------------------------------------------------------------
 
   // Task 2 
 

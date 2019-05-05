@@ -57,23 +57,23 @@ object SimpleSolutions extends App {
 
   // Build a custom reducer. 
   // NOTE There's a ***BETTER*** solution with ad-hoc polymorphism
-  sealed abstract class Reducer (a:Int, b:Int) {
+  sealed abstract class Reducer {
     def zero:Int
     def reduce(a:Int, b:Int):Int
   }
 
-  class AddReducer (a:Int, b:Int) extends Reducer(a,b) {
+  class AddReducer extends Reducer {
     override def zero    = 0
     override def reduce(a:Int, b:Int)  = a + b   
   }
   
-  class MulReducer (a:Int, b:Int) extends Reducer(a,b) {
+  class MulReducer extends Reducer {
     override def zero    = 1
     override def reduce(a:Int, b:Int)  = a * b   
   }
   
-  val adder  = new AddReducer (1,2)
-  val muler  = new MulReducer (1,2)
+  val adder  = new AddReducer 
+  val muler  = new MulReducer 
   
   val res10  = reduce (data, adder.zero, adder.reduce)
   println (s"res10 = $res10")
