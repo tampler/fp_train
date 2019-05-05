@@ -8,7 +8,7 @@ object PatternMatching extends App {
   case class Person(firstName: String, lastName: String)
   case class Dog(name: String)
 
-  def echo(x: Any): String = x match {
+  def echo(x: Any, y:Any): String = x,y match {
 
     // constant patterns
     case 0 => "zero"
