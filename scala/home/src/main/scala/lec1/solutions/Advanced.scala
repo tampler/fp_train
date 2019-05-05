@@ -1,6 +1,9 @@
 
 package lec1
 
+import scalaz._
+import Scalaz._
+
 object AdvancedSolutions extends App {
 
   def Sum (vec:Vector[Int]):Int = ???
@@ -70,13 +73,15 @@ object AdvancedSolutions extends App {
 
   
   //--------------------------------------------------------------------------------------------
-  // Using a case class to wrap the value
+  // Using a case class to wrap the value 
+  // Note: Immutable !
   //--------------------------------------------------------------------------------------------
   
   case class Wrap (a:Int) {
     def add(b:Int):Wrap = copy(a = a + b)
   }
 
+  // Using immutable copy
   def Sum7 (vec:VecInt) = {
     val init:Wrap = Wrap (0)
     
@@ -88,14 +93,44 @@ object AdvancedSolutions extends App {
     
     res
   }
+  
+  //--------------------------------------------------------------------------------------------
+  // Using a case class to wrap the value and ScalaZ lenses to get/set/modify immutables for free !
+  // Note: Immutable !
+  // Hint: think of Lens as immutable getters/setters/modifiers
+  //--------------------------------------------------------------------------------------------
+  val wrapL  = Lens.lensu[Wrap, Int] (
+    (a, value) => a.copy (a = value),
+    _.a
+  )
+  
+  val init  = Wrap(0)
+  val newinit = wrapL.set(init, 2)
+  val out  = wrapL.get(newinit)
+  
 
+  println (s"init = $init")
+  println (s"newinit = $newinit")
+  
+  // Using ScalaZ lenses
+  def Sum8 (vec:VecInt) = {
+    
+    // Use lenses to immutably transform initial object and use Lens setters to add each element of Vector[Int]
+    val tmp = vec map ( v => wrapL.set(init,v) )
+    
+    // Walk thru the vector of wraps, fetch the value with lenses and add it to the accumulator
+    val res:Int = tmp map ( v => wrapL.get(v) ) reduce (_ + _)
+    
+    res
+  }
+  
   //--------------------------------------------------------------------------------------------
   // Let's test all this stuff
   //--------------------------------------------------------------------------------------------
   
   val arr  = Vector (1,2,3)
   
-  for (i <- 0 until 8) {
+  for (i <- 0 until 9) {
     val res = i match {
       case 0 =>  Sum0(arr)
       case 1 =>  Sum1(arr)
@@ -105,6 +140,7 @@ object AdvancedSolutions extends App {
       case 5 =>  Sum5(arr)
       case 6 =>  Sum6(arr)
       case 7 =>  Sum7(arr)
+      case 8 =>  Sum8(arr)
       case _ =>  0
     }
     println (s"res $i = $res")
