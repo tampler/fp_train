@@ -26,17 +26,35 @@ object SimpleSolutions extends App {
   //--------------------------------------------------------------------------------------------
   def Func2 (a:Int, b:Int, c:Int) = a + b + c
 
+  def Func22  = (Func2 _).curried 
+  //Func222.boom() - this is how you can check actual function signature, which is Int => (Int => (Int => Int))
+  
+  // So, the answer is:
+  def Func222 (a:Int) = ((b:Int) => (c:Int) => a + b + c)
+  
+  val res222 = Func222(1)(2)(3)
+  println (s"res222 = $res222")
+  
+
+
   // f(x) = 1/x was definied as Partially Defined Function. Rewrite it with 
   // A. pattern matching 
   // B. Option
   //--------------------------------------------------------------------------------------------
 
   def Func30 (a:Int):Int = {
-    if ( a == 0 ) 0 
-    else 1/a
+    a match {
+      case 0 => 0
+      case _ => 1/a
+    }
   }
 
   def Func31 (a:Int):Option[Int] = {
+    if ( a == 0 ) None 
+    else Some (1/a)
+  }
+  
+  def Func32 (a:Int):Option[Int] = {
     a match {
       case 0 => None
       case _ => Some(1/a)
