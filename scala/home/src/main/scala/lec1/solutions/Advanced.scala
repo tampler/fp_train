@@ -68,17 +68,23 @@ object AdvancedSolutions extends App {
     res
   }
 
+  
+  //--------------------------------------------------------------------------------------------
+  // Using a case class to wrap the value
   //--------------------------------------------------------------------------------------------
   
-  case class Sum (a:Int) {
-    def add(b:Int):Sum = copy(a = a + b)
+  case class Wrap (a:Int) {
+    def add(b:Int):Wrap = copy(a = a + b)
   }
 
   def Sum7 (vec:VecInt) = {
-    val init = Sum (0)
+    val init:Wrap = Wrap (0)
     
+    // This creates a Vector of objects, each contains a value from input VecInt
+    val tmp:Vector[Wrap] = vec map ( v => init.add(v) )
 
-    val res = vec map ( v => init.add(v) )
+    // Walk thru the vector of wraps, fetch the value and add it to the accumulator
+    val res:Int = tmp map ( v => v.a ) reduce (_ + _)
     
     res
   }
@@ -89,7 +95,7 @@ object AdvancedSolutions extends App {
   
   val arr  = Vector (1,2,3)
   
-  for (i <- 0 until 7) {
+  for (i <- 0 until 8) {
     val res = i match {
       case 0 =>  Sum0(arr)
       case 1 =>  Sum1(arr)
@@ -98,6 +104,7 @@ object AdvancedSolutions extends App {
       case 4 =>  Sum4(arr)
       case 5 =>  Sum5(arr)
       case 6 =>  Sum6(arr)
+      case 7 =>  Sum7(arr)
       case _ =>  0
     }
     println (s"res $i = $res")
