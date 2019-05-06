@@ -145,12 +145,13 @@ object AdvancedSolutions extends App {
                   p.update(_ + v))
               )
 
-    //tmp.a()
-    //val res  = tmp map  ( v => 
-    //                          v.fold(_ => 1, _ => 0))
+    val nol:Vector[UIO[Int]]  = vec map ( v => for {
+                                ref <- out
+                                q   <- ref.update (_ + v)
+                              } yield (q)
+    )
     
-
-    tmp
+    nol
   }
   
   //--------------------------------------------------------------------------------------------
