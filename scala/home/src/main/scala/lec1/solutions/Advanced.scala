@@ -3,6 +3,10 @@ package lec1
 
 import scalaz._
 import Scalaz._
+import scalaz.zio.{Ref, DefaultRuntime, IO, UIO}
+//import scalaz.zio._
+import scalaz.zio.console.{putStrLn}
+
 
 object AdvancedSolutions extends App {
 
@@ -123,6 +127,34 @@ object AdvancedSolutions extends App {
     
     res
   }
+
+  //--------------------------------------------------------------------------------------------
+  // Using ZIO Ref - treat immutable values as variables with getters and setters. 
+  // Similar technique to ScalaZ Lens
+  //-------------------------------------------------------------------------------------------- 
+//  val runtime  = new DefaultRuntime{}
+//
+//  def makeZero:UIO[Ref[Int]] = Ref.make(0)
+//
+//  def Sum9 (vec:VecInt) = { 
+//
+//    val tmp = for { 
+//      ref <- makeZero 
+//      v   <- ref.update (_ + 1)
+//      _ <- putStrLn("Value = " + v)
+//    } yield (v)
+//
+//    val res:UIO[Int]  = IO.succeed(21)
+//    //val endval    = res.flatMap ( v => v.toInt )
+//    //val res:Int  = tmp0.flatMap ( v => v)
+//    //val res  = runtime.unsafeRun(putStrLn(tmp))
+//    //val res  = runtime.unsafeRun(putStrLn(tmp))
+//    //res.a()
+//    //res
+//    //runtime.unsafeRun(putStrLn(res))
+//    res
+//    
+//  }
   
   //--------------------------------------------------------------------------------------------
   // Let's test all this stuff
@@ -130,7 +162,7 @@ object AdvancedSolutions extends App {
   
   val arr  = Vector (1,2,3)
   
-  for (i <- 0 until 9) {
+  for (i <- 0 until 10) {
     val res = i match {
       case 0 =>  Sum0(arr)
       case 1 =>  Sum1(arr)
@@ -141,13 +173,12 @@ object AdvancedSolutions extends App {
       case 6 =>  Sum6(arr)
       case 7 =>  Sum7(arr)
       case 8 =>  Sum8(arr)
+      //case 9 =>  Sum9(arr)
       case _ =>  0
     }
     println (s"res $i = $res")
   }
-    
-  
-    
+
 
   //--------------------------------------------------------------------------------------------
 
@@ -155,4 +186,65 @@ object AdvancedSolutions extends App {
 
   // For recursive Implementation, can you implement a function, which sums up very large vectors? What are potential dangers for a recursive implementation?
 
+ 
 }
+
+import scalaz.zio.{App}
+
+object AdvancedZIO extends App {
+  
+  type VecInt = Vector[Int]
+
+  def run(args: List[String]) =
+    myAppLogic.fold(_ => 1, _ => 0)
+
+  val myAppLogic  = for {
+
+      ref <- Ref.make(2)
+      v   <- ref.update(_ + 3)
+      _   <- putStrLn("Value = " + v) // Value = 5 
+
+  } yield ()
+ 
+  def makeZero:UIO[Ref[Int]] = Ref.make(0)
+
+  def Sum9 (vec:VecInt) = {
+
+    val out  = makeZero
+    
+    val tmp = vec map ( v => 
+                out flatMap ( p =>
+                  p.update(_ + v))
+              )
+
+    //tmp.hi()
+    //val res:Int = tmp map ( t =>  
+    //    t flatMap  reduce (_ + _)
+    //    
+    //)
+    //flatMap ( v => out.get(v) ) reduce (_ + _)
+    
+    //res.hi()
+    //val res = for {
+    //  zero <- makeZero
+    //  v     <- ref.update(_ + 1)
+    //  
+    //
+    //}yield ()
+    
+    //val res  = 0
+   
+    tmp
+  }
+
+  //val myAppLogic  = for {
+
+  //  val arr  = Vector (1,2,3)
+  //  val output  = Sum9(arr)
+  //  //val msg  = IO.succeed(putStrLn(output))
+  //  
+  //  output
+  //}
+
+}   
+

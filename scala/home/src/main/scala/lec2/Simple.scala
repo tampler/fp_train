@@ -12,13 +12,13 @@ object Simple extends App {
   // task2: Parametric Polymorphism 
   // Implement a correct version of the less() method for Int and String types
 
-  class Duo[T] (first:T, second:T) {
+  //class Duo[T] (first:T, second:T) {
 
-    def less ():T = {
-      if ( first < second ) first else second 
-    }
-  
-  }
+  //  def less ():T = {
+  //    if ( first < second ) first else second 
+  //  }
+  //
+  //}
 
   // task 3: Ad-hoc Polymorphism 
   // Reimplement the reduce function from lec1 home work with ad-hoc Polymorphism. Implement both handwritten and library solutions
