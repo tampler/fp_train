@@ -1,0 +1,7 @@
+Discussion on Functionalal features in Python by its Creator, Guido van Rossum, here:
+http://python-history.blogspot.com/2009/04/origins-of-pythons-functional-features.html
+
+
+Botton line:
+
+However, the Python community does not consider the use of Functional Programming techniques best practice at all times. Even so, we've learned new ways to solve problems and if needed we can solve problems leveraging the expressivity of Functional Programming. 

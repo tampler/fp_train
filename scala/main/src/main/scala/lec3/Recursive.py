@@ -6,3 +6,5 @@ def factorial_recursive(n):
     # Recursive case: n! = n * (n-1)!
     else:
         return n * factorial_recursive(n-1)
+
+print(factorial_recursive (5))
