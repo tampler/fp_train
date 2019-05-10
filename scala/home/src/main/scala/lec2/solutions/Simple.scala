@@ -3,8 +3,6 @@ package lec2
 import cats.{Monoid}
 import cats.implicits._
 
-
-
 object SimpleSolutions extends App {
 // task 1: Dynamic Polymorphism
 // Implement a class hierarchy, according to the company.png UML diagram
