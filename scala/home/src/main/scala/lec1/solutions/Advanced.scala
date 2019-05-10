@@ -134,25 +134,18 @@ object AdvancedSolutions extends App {
   //-------------------------------------------------------------------------------------------- 
   val runtime  = new DefaultRuntime{}
 
+  // Create and init a zero reference
   def makeZero:UIO[Ref[Int]] = Ref.make(0)
 
-  def Sum9 (vec:VecInt) = {
+  // Return value is a monadic output
+  def Sum9 (vec:VecInt):UIO[Int] = for {
 
-    val out  = makeZero
-    
-    val tmp:Vector[UIO[Int]] = vec map ( v => 
-                out flatMap ( p =>
-                  p.update(_ + v))
-              )
+    out <- makeZero  // create a ref
+    //ints <- UIO.collectAll(vec)
+    _ <- UIO.foreach(vec)(i => out.update (_ + i)) // update a ref for each element of inpu vector
+    res <- out.get // read the value, wrapped inside the ref
 
-    val nol:Vector[UIO[Int]]  = vec map ( v => for {
-                                ref <- out
-                                q   <- ref.update (_ + v)
-                              } yield (q)
-    )
-    
-    nol
-  }
+  } yield res
   
   //--------------------------------------------------------------------------------------------
   // Let's test all this stuff
@@ -177,16 +170,8 @@ object AdvancedSolutions extends App {
     println (s"res $i = $res")
   }
 
-  val res9  = Sum9(arr)
-
-  val out9 = for {
-    v <- putStrLn (s"res 9 = $res9")
-  } yield(v)
-
-  runtime.unsafeRun(out9)
+  runtime.unsafeRun(Sum9(arr).flatMap ( num => putStrLn(s"res 9 = $num")))
   
-  //runtime.unsafeRun(putStrLn (s"res9 = $res9"))
-
 
   //--------------------------------------------------------------------------------------------
 
@@ -197,62 +182,4 @@ object AdvancedSolutions extends App {
  
 }
 
-//import scalaz.zio.{App}
-//
-//object AdvancedZIO extends App {
-//  
-//  type VecInt = Vector[Int]
-//
-//  def run(args: List[String]) =
-//    myAppLogic
-//
-//  //val myAppLogic  = for {
-//
-//  //    ref <- Ref.make(2)
-//  //    v   <- ref.update(_ + 3)
-//  //    _   <- putStrLn("Value = " + v) // Value = 5 
-//
-//  //} yield ()
-// 
-//  def makeZero:UIO[Ref[Int]] = Ref.make(0)
-//
-//  def Sum9 (vec:VecInt) = {
-//
-//    val out  = makeZero
-//    
-//    val tmp = vec map ( v => 
-//                out flatMap ( p =>
-//                  p.update(_ + v))
-//              )
-//
-//    //tmp.hi()
-//    //val res:Int = tmp map ( t =>  
-//    //    t flatMap  reduce (_ + _)
-//    //    
-//    //)
-//    //flatMap ( v => out.get(v) ) reduce (_ + _)
-//    
-//    //res.hi()
-//    //val res = for {
-//    //  zero <- makeZero
-//    //  v     <- ref.update(_ + 1)
-//    //  
-//    //
-//    //}yield ()
-//    
-//    //val res  = 0
-//   
-//    tmp
-//  }
-//
-//  def myAppLogic  =  {
-//
-//    val arr  = Vector (1,2,3)
-//    val output  = Sum9(arr)
-//    //val msg  = IO.succeed(putStrLn(output))
-//    
-//    output
-//  }
-//
-//}   
 
