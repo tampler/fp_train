@@ -1,6 +1,8 @@
 package lec2
 
 import cats.{Monoid}
+import cats.implicits._
+
 
 
 object SimpleSolutions extends App {
@@ -109,14 +111,15 @@ object SimpleSolutions extends App {
   println (s"res0 = $res0")
   println (s"res1 = $res1")
  
-  // Or even better! Use Cats/ScalaZ monoid
-  //override def reduce[A:Monoid] (arr:Vector[A]):A  = {
-  //  val ev  = implicitly[Monoid[Int]]
+  // Or even better! Instantiate Cats/ScalaZ monoid instance and avoid reinventing own type classes
+  // More info here: https://typelevel.org/cats/typeclasses/monoid.html
+  def reduceMonoid[A] (arr:Vector[A])(implicit ev:Monoid[A]):A  = arr.foldLeft(ev.empty)(ev.combine)
 
-  //  val tmp = arr.foldLeft(ev.zero)(ev.add)
-  //  tmp
-  //}
-
+  val res2  = reduceMonoid(vint)
+  val res3  = reduceMonoid(vstr)
+  
+  println (s"res2 = $res2")
+  println (s"res3 = $res3")
 
 }
 
