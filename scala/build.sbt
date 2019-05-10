@@ -4,6 +4,7 @@ scalaVersion := "2.12.8"
 
 val ZIOVersion = "1.0-RC4"
 val scalazVersion = "7.2.27"
+val catsVersion="2.0.0-M1"
 val simulaVersion = "0.16.0"
 val scalacheckVersion = "1.14.0"
 
@@ -21,6 +22,7 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "com.github.mpilquist"  %% "simulacrum" % simulaVersion,
     "org.scalaz" %% "scalaz-zio" % ZIOVersion,
+    "org.typelevel" %% "cats-core" % catsVersion,
     "org.scalacheck" %% "scalacheck" % scalacheckVersion,
     "org.scalaz" %% "scalaz-core" % scalazVersion
   )
