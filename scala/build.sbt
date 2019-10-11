@@ -1,41 +1,45 @@
 name := "fp_train"
-version := "1.0"
-scalaVersion := "2.12.8"
+version := "0.0.1"
+scalaVersion := "2.12.10"
 
-val ZIOVersion = "1.0-RC4"
-val scalazVersion = "7.2.27"
-val catsVersion="2.0.0-M1"
-val simulaVersion = "0.16.0"
-val scalacheckVersion = "1.14.0"
-
+val ZioVersion        = "1.0.0-RC14"
+val ScalazVersion     = "7.2.28"
+val CatsVersion       = "2.0.0"
+val SimulaVersion     = "1.0.0"
+val ScalacheckVersion = "1.14.0"
 
 lazy val commonSettings = Seq(
-
   maxErrors := 5,
-  scalacOptions ++= Seq(
-    "-feature",
-    "-deprecation",
-    "-unchecked",
-    "-language:_",
-    "-Ypartial-unification",
-    "-Xfatal-warnings"),
+  scalacOptions --= Seq(
+    "-Xfatal-warnings"
+  ),
   libraryDependencies ++= Seq(
-    "com.github.mpilquist"  %% "simulacrum" % simulaVersion,
-    "org.scalaz" %% "scalaz-zio" % ZIOVersion,
-    "org.typelevel" %% "cats-core" % catsVersion,
-    "org.scalacheck" %% "scalacheck" % scalacheckVersion,
-    "org.scalaz" %% "scalaz-core" % scalazVersion
+    "org.typelevel" %% "cats-core"   % CatsVersion,
+    "org.scalaz"    %% "scalaz-core" % ScalazVersion,
+    "dev.zio"       %% "zio"         % ZioVersion,
+    "org.typelevel" %% "simulacrum"  % SimulaVersion
+    //"org.scalacheck" %% "scalacheck" % scalacheckVersion,
   )
-
 )
 
-
-lazy val main = project.in(file("main"))
+lazy val main = project
+  .in(file("main"))
   .settings(commonSettings)
 
-lazy val home = project.in(file("home"))
+lazy val home = project
+  .in(file("home"))
   .settings(commonSettings)
 
-lazy val grad = project.in(file("grad"))
+lazy val grad = project
+  .in(file("grad"))
   .settings(commonSettings)
 
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+
+// Aliases
+addCommandAlias("com", "all compile test:compile")
+addCommandAlias("lint", "; compile:scalafix --check ; test:scalafix --check")
+addCommandAlias("fix", "all compile:scalafix test:scalafix")
+addCommandAlias("fmt", "; scalafmtSbt; scalafmtAll; test:scalafmtAll")
+//addCommandAlias("fmt", "; scalafmtSbt;")
+addCommandAlias("chk", "; scalafmtSbtCheck; scalafmtCheck; test:scalafmtCheck")
